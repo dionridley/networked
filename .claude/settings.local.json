@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "WebFetch(domain:turborepo.com)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:storybook.js.org)",
+      "Bash(mkdir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

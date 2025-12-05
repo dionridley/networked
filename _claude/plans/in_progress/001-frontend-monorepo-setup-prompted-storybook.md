@@ -40,35 +40,39 @@ These assumptions were made during plan creation. Challenge any that seem incorr
 ### Blocking (must resolve before implementation)
 
 - [x] **React Compiler Babel Plugin** [DECIDED: 2025-12-03]
-  The React Compiler requires `babel-plugin-react-compiler`. This means we need to configure Babel alongside Vite. Should we:
+      The React Compiler requires `babel-plugin-react-compiler`. This means we need to configure Babel alongside Vite. Should we:
+
   - Option A: Use `@vitejs/plugin-react` with Babel config for React Compiler (simpler but slightly slower builds)
   - Option B: Use `@vitejs/plugin-react-swc` with experimental SWC React Compiler support (faster but less mature)
-  > **Decision:** Option A - @vitejs/plugin-react + Babel
-  > **Rationale:** Simpler setup, well-documented, recommended for stability with the React Compiler
+    > **Decision:** Option A - @vitejs/plugin-react + Babel
+    > **Rationale:** Simpler setup, well-documented, recommended for stability with the React Compiler
 
 - [x] **Storybook Version** [DECIDED: 2025-12-03]
-  Which Storybook version should we target?
+      Which Storybook version should we target?
+
   - Option A: Storybook 8.x (stable, well-documented)
   - Option B: Storybook 9.x if available (latest features but may have breaking changes)
-  > **Decision:** Storybook 10.x (latest is 10.1.0)
-  > **Rationale:** User requested latest available version. Storybook 10 is ESM-only, 29% smaller install size, includes CSF Factories and improved module mocking. Requires Node.js 20.16+, 22.19+, or 24+
+
+    > **Decision:** Storybook 10.x (latest is 10.1.0)
+    > **Rationale:** User requested latest available version. Storybook 10 is ESM-only, 29% smaller install size, includes CSF Factories and improved module mocking. Requires Node.js 20.16+, 22.19+, or 24+
 
 - [x] **Package Naming Convention** [DECIDED: 2025-12-03]
-  The existing `apps/web` uses plain name "web" while `packages/ui` uses scoped "@repo/ui". For `apps/prompted`:
+      The existing `apps/web` uses plain name "web" while `packages/ui` uses scoped "@repo/ui". For `apps/prompted`:
   - Option A: Use scoped name `@repo/prompted` (consistent with packages, explicit in imports)
   - Option B: Use plain name `prompted` (consistent with existing apps/web)
-  > **Decision:** Plain name "prompted"
-  > **Rationale:** Consistent with existing apps/web naming convention
+    > **Decision:** Plain name "prompted"
+    > **Rationale:** Consistent with existing apps/web naming convention
 
 ### Non-Blocking (can resolve during implementation)
 
 - [x] **CSS Strategy** [DECIDED: 2025-12-03]
-  What CSS approach should `apps/prompted` use?
+      What CSS approach should `apps/prompted` use?
+
   > **Decision:** Tailwind CSS
   > **Rationale:** Utility-first CSS framework, popular for rapid development
 
 - [x] **Testing Setup** [DECIDED: 2025-12-03]
-  Should Vitest be configured during initial setup or deferred?
+      Should Vitest be configured during initial setup or deferred?
   > **Decision:** Yes, set up Vitest now
   > **Rationale:** Vitest 3.2+ is required for Vite 7 compatibility, better to include from the start
 
@@ -92,31 +96,34 @@ These assumptions were made during plan creation. Challenge any that seem incorr
 **Estimated Time:** 2.5 hours
 
 #### Tasks
-- [ ] Create `apps/prompted` directory structure
-- [ ] Create `apps/prompted/package.json` with React 19.2.0 and Vite 7.x
-- [ ] Install React Compiler babel plugin (`babel-plugin-react-compiler`)
-- [ ] Create `apps/prompted/vite.config.ts` with React Compiler integration
-- [ ] Create `apps/prompted/tsconfig.json` extending shared config
-- [ ] Create `apps/prompted/index.html` entry point
-- [ ] Create `apps/prompted/src/main.tsx` React entry point
-- [ ] Create `apps/prompted/src/App.tsx` root component
-- [ ] Add `@repo/ui` as workspace dependency
-- [ ] Install and configure Tailwind CSS v4
-- [ ] Install and configure Vitest 3.2+
-- [ ] Create basic test file to verify Vitest works
-- [ ] Verify `pnpm dev --filter=prompted` works
+
+- [x] Create `apps/prompted` directory structure
+- [x] Create `apps/prompted/package.json` with React 19.2.0 and Vite 7.x
+- [x] Install React Compiler babel plugin (`babel-plugin-react-compiler`)
+- [x] Create `apps/prompted/vite.config.ts` with React Compiler integration
+- [x] Create `apps/prompted/tsconfig.json` extending shared config
+- [x] Create `apps/prompted/index.html` entry point
+- [x] Create `apps/prompted/src/main.tsx` React entry point
+- [x] Create `apps/prompted/src/App.tsx` root component
+- [x] Add `@repo/ui` as workspace dependency
+- [x] Install and configure Tailwind CSS v4
+- [x] Install and configure Vitest 3.2+
+- [x] Create basic test file to verify Vitest works
+- [x] Verify `pnpm dev --filter=prompted` works
 
 #### Test Verification
-- [ ] App starts without errors on `pnpm dev --filter=prompted`
-- [ ] React DevTools shows React 19 version
-- [ ] React Compiler is active (check DevTools or build output)
-- [ ] Tailwind CSS classes work correctly
-- [ ] `pnpm test --filter=prompted` runs successfully
-- [ ] Import from `@repo/ui` works
+
+- [x] App starts without errors on `pnpm dev --filter=prompted`
+- [x] React DevTools shows React 19 version
+- [x] React Compiler is active (check DevTools or build output)
+- [x] Tailwind CSS classes work correctly
+- [x] `pnpm test --filter=prompted` runs successfully
+- [x] Import from `@repo/ui` works
 
 #### Code Changes Needed
 
 **apps/prompted/package.json:**
+
 ```json
 {
   "name": "prompted",
@@ -155,26 +162,25 @@ These assumptions were made during plan creation. Challenge any that seem incorr
 ```
 
 **apps/prompted/vite.config.ts:**
+
 ```typescript
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [
     react({
       babel: {
-        plugins: [
-          ['babel-plugin-react-compiler', {}],
-        ],
+        plugins: [["babel-plugin-react-compiler", {}]],
       },
     }),
     tailwindcss(),
   ],
   test: {
-    environment: 'jsdom',
+    environment: "jsdom",
     globals: true,
-    setupFiles: ['./src/test/setup.ts'],
+    setupFiles: ["./src/test/setup.ts"],
   },
 });
 ```
@@ -184,6 +190,7 @@ export default defineConfig({
 **Estimated Time:** 2 hours
 
 #### Tasks
+
 - [ ] Create `apps/storybook` directory structure
 - [ ] Create `apps/storybook/package.json` with Storybook 10.x dependencies
 - [ ] Create `apps/storybook/.storybook/main.ts` pointing to `packages/ui/src/**/*.stories.tsx`
@@ -193,6 +200,7 @@ export default defineConfig({
 - [ ] Verify `pnpm dev --filter=storybook` works
 
 #### Test Verification
+
 - [ ] Storybook starts without errors on `pnpm dev --filter=storybook`
 - [ ] Storybook UI loads in browser
 - [ ] Stories from `packages/ui` are discovered
@@ -200,6 +208,7 @@ export default defineConfig({
 #### Code Changes Needed
 
 **apps/storybook/package.json:**
+
 ```json
 {
   "name": "storybook",
@@ -230,22 +239,23 @@ export default defineConfig({
 ```
 
 **apps/storybook/.storybook/main.ts:**
+
 ```typescript
-import type { StorybookConfig } from '@storybook/react-vite';
-import { join, dirname } from 'path';
+import type { StorybookConfig } from "@storybook/react-vite";
+import { join, dirname } from "path";
 
 function getAbsolutePath(value: string) {
-  return dirname(require.resolve(join(value, 'package.json')));
+  return dirname(require.resolve(join(value, "package.json")));
 }
 
 const config: StorybookConfig = {
-  stories: ['../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)'],
+  stories: ["../../../packages/ui/src/**/*.stories.@(js|jsx|ts|tsx)"],
   addons: [
-    getAbsolutePath('@storybook/addon-essentials'),
-    getAbsolutePath('@storybook/addon-interactions'),
+    getAbsolutePath("@storybook/addon-essentials"),
+    getAbsolutePath("@storybook/addon-interactions"),
   ],
   framework: {
-    name: getAbsolutePath('@storybook/react-vite'),
+    name: getAbsolutePath("@storybook/react-vite"),
     options: {},
   },
 };
@@ -258,6 +268,7 @@ export default config;
 **Estimated Time:** 1.5 hours
 
 #### Tasks
+
 - [ ] Update `packages/ui/package.json` to use React 19 as peer dependency
 - [ ] Create example story file: `packages/ui/src/components/Button/Button.stories.tsx`
 - [ ] Ensure component exports are compatible with stories
@@ -265,6 +276,7 @@ export default config;
 - [ ] Verify stories appear in Storybook
 
 #### Test Verification
+
 - [ ] Example story renders in Storybook
 - [ ] Component hot-reloads when modified
 - [ ] No TypeScript errors in story files
@@ -272,6 +284,7 @@ export default config;
 #### Code Changes Needed
 
 **packages/ui/package.json (updated peerDependencies):**
+
 ```json
 {
   "peerDependencies": {
@@ -285,14 +298,15 @@ export default config;
 ```
 
 **packages/ui/src/components/Button/Button.stories.tsx (example):**
+
 ```tsx
-import type { Meta, StoryObj } from '@storybook/react';
-import { Button } from './Button';
+import type { Meta, StoryObj } from "@storybook/react";
+import { Button } from "./Button";
 
 const meta: Meta<typeof Button> = {
-  title: 'Components/Button',
+  title: "Components/Button",
   component: Button,
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export default meta;
@@ -300,7 +314,7 @@ type Story = StoryObj<typeof Button>;
 
 export const Primary: Story = {
   args: {
-    children: 'Click me',
+    children: "Click me",
   },
 };
 ```
@@ -310,6 +324,7 @@ export const Primary: Story = {
 **Estimated Time:** 1.5 hours
 
 #### Tasks
+
 - [ ] Update `apps/web/package.json` to React 19.2.0 and Vite 7.x
 - [ ] Update `apps/web/vite.config.ts` if needed for Vite 7 compatibility
 - [ ] Optionally add React Compiler to apps/web (consistent with prompted)
@@ -318,6 +333,7 @@ export const Primary: Story = {
 - [ ] Verify `pnpm build --filter=web` works
 
 #### Test Verification
+
 - [ ] App starts without errors on `pnpm dev --filter=web`
 - [ ] React DevTools shows React 19 version
 - [ ] Build completes successfully
@@ -326,6 +342,7 @@ export const Primary: Story = {
 #### Code Changes Needed
 
 **apps/web/package.json (updated):**
+
 ```json
 {
   "dependencies": {
@@ -348,12 +365,14 @@ export const Primary: Story = {
 **Estimated Time:** 30 minutes
 
 #### Tasks
+
 - [ ] Update `turbo.json` to exclude `*.stories.tsx` from production build inputs
 - [ ] Add `build:storybook` task with proper outputs configuration
 - [ ] Add `test` task for Vitest
 - [ ] Test that story changes don't invalidate `apps/prompted` build cache
 
 #### Test Verification
+
 - [ ] Run `pnpm build --filter=prompted`, note cache status
 - [ ] Modify a `.stories.tsx` file
 - [ ] Run `pnpm build --filter=prompted` again - should be FULL HIT (cached)
@@ -362,6 +381,7 @@ export const Primary: Story = {
 #### Code Changes Needed
 
 **frontend/turbo.json (updated):**
+
 ```json
 {
   "$schema": "https://turborepo.com/schema.json",
@@ -393,6 +413,7 @@ export const Primary: Story = {
 **Estimated Time:** 30 minutes
 
 #### Tasks
+
 - [ ] Run `pnpm install` from monorepo root to update lockfile
 - [ ] Verify `pnpm dev` runs all apps concurrently
 - [ ] Verify `pnpm build` builds all apps successfully
@@ -403,6 +424,7 @@ export const Primary: Story = {
 - [ ] Document any setup notes or gotchas
 
 #### Test Verification
+
 - [ ] All three apps (`web`, `prompted`, `storybook`) start correctly
 - [ ] Full build completes without errors
 - [ ] All tests pass
@@ -444,6 +466,7 @@ export const Primary: Story = {
 ## Refinement History
 
 **Refinements:**
+
 - 2025-12-03: Resolved 9 questions via interactive Q&A - Updated to Storybook 10.x, Vite 7.x, added Tailwind CSS, Vitest, and apps/web upgrade
 
 ---
@@ -451,6 +474,7 @@ export const Primary: Story = {
 ## Implementation Notes
 
 **Actual Time Tracking:**
+
 - Phase 1: [Estimated: 2.5 hours] (Actual: TBD)
 - Phase 2: [Estimated: 2 hours] (Actual: TBD)
 - Phase 3: [Estimated: 1.5 hours] (Actual: TBD)
@@ -459,6 +483,7 @@ export const Primary: Story = {
 - Phase 6: [Estimated: 0.5 hours] (Actual: TBD)
 
 **Key Decisions:**
+
 - **React Compiler:** Using @vitejs/plugin-react + Babel for stability
 - **Storybook:** Version 10.x (ESM-only, 29% smaller, requires Node 20.16+)
 - **Package naming:** Plain "prompted" (consistent with apps/web)
@@ -467,7 +492,9 @@ export const Primary: Story = {
 - **apps/web:** Will be upgraded to React 19 and Vite 7 as part of this plan
 
 **Assumptions Validated:**
+
 - All assumptions now confirmed
 
 **Lessons Learned:**
+
 - TBD during implementation
